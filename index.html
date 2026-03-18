@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Investiční Lab</title>
     <style>
+        input {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
         :root {
             --bg: #f5f5f7;
             --card-bg: rgba(255, 255, 255, 0.8);
@@ -132,6 +137,19 @@
             </div>
             <div class="result" id="comp-result">Celkem: 162 889 Kč</div>
         </div>
+<div class="card">
+    <h2>Odhad státního důchodu</h2>
+    <p style="font-size: 13px; color: var(--text-secondary);">Zjednodušený odhad podle aktuálních pravidel v ČR.</p>
+    <div class="input-group">
+        <label>Hrubá měsíční mzda (Kč)</label>
+        <input type="number" id="pension-salary" value="45000" oninput="calcPension()">
+    </div>
+    <div class="input-group">
+        <label>Odpracované roky</label>
+        <input type="number" id="pension-years" value="40" oninput="calcPension()">
+    </div>
+    <div class="result" id="pension-result" style="color: #555;">Odhad: 21 450 Kč</div>
+</div>
 
         <div class="card" style="grid-column: span 1;">
             <h2>S&P 500 Simulátor <span class="sp-badge">HISTORICKÝ PRŮMĚR</span></h2>
@@ -153,7 +171,36 @@
     </div>
 </div>
 
+
 <script>
+    function calcPension() {
+    const salary = parseFloat(document.getElementById('pension-salary').value) || 0;
+    const years = parseFloat(document.getElementById('pension-years').value) || 0;
+
+    // Parametry pro rok 2024/2025
+    const zakladniVymera = 4400; // Fixní část pro každého
+    const redukcniHranice1 = 19346; // 100 % se započítává do této výše
+    
+    // Zjednodušený výpočet výpočtového základu
+    let vypoctovyZaklad = 0;
+    if (salary <= redukcniHranice1) {
+        vypoctovyZaklad = salary;
+    } else {
+        // Nad první hranici se započítává jen 26 % (zjednodušený model)
+        vypoctovyZaklad = redukcniHranice1 + ((salary - redukcniHranice1) * 0.26);
+    }
+
+    // Procentní výměra: 1.5 % z výpočtového základu za každý rok pojištění
+    const procentniVymera = (vypoctovyZaklad * 0.015) * years;
+    
+    const celkovyDuchod = zakladniVymera + procentniVymera;
+
+    document.getElementById('pension-result').innerText = "Odhad: " + formatMoney(celkovyDuchod);
+}
+
+// Nezapomeň přidat calcPension(); do inicializace na konci scriptu!
+calcPension();
+
     function formatMoney(num) {
         return new Intl.NumberFormat('cs-CZ').format(Math.round(num)) + " Kč";
     }
