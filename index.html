@@ -3,95 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investiční Lab</title>
+    <title>Investiční Lab Pro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        input {
-    -webkit-appearance: none;
-    appearance: none;
-}
-
         :root {
             --bg: #f5f5f7;
-            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-bg: rgba(255, 255, 255, 0.9);
             --accent: #0071e3;
             --text: #1d1d1f;
             --text-secondary: #86868b;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 40px 20px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .container {
-            max-width: 900px;
-            width: 100%;
-        }
+        .container { max-width: 1100px; width: 100%; }
 
-        header {
-            text-align: center;
-            margin-bottom: 50px;
-        }
-
-        h1 { font-size: 40px; font-weight: 600; letter-spacing: -0.02em; }
-        p.subtitle { color: var(--text-secondary); font-size: 19px; }
+        header { text-align: center; margin: 40px 0; }
+        h1 { font-size: 48px; font-weight: 700; letter-spacing: -0.015em; margin-bottom: 10px; }
+        .subtitle { color: var(--text-secondary); font-size: 21px; font-weight: 400; }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
             gap: 24px;
         }
 
         .card {
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 24px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
-            border: 1px solid rgba(255,255,255,0.3);
-            transition: transform 0.3s ease;
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.06);
+            display: flex;
+            flex-direction: column;
         }
 
-        .card:hover { transform: translateY(-5px); }
+        h2 { font-size: 22px; margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
 
-        h2 { font-size: 21px; margin-top: 0; }
-
-        .input-group { margin-bottom: 15px; }
-        label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 5px; text-transform: uppercase; }
+        .input-row { display: flex; gap: 15px; margin-bottom: 15px; }
+        .input-group { flex: 1; }
+        
+        label { display: block; font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
         input {
             width: 100%;
             padding: 12px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid #d2d2d7;
-            background: #fff;
             font-size: 16px;
-            box-sizing: border-box;
+            background: #fff;
             outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
         }
         input:focus { border-color: var(--accent); }
 
-        .result {
+        .chart-container {
+            width: 100%;
+            height: 200px;
             margin-top: 20px;
-            padding-top: 15px;
-            border-top: 1px solid #e5e5e7;
-            font-weight: 600;
-            font-size: 18px;
+            position: relative;
         }
 
-        .sp-badge {
-            background: linear-gradient(135deg, #0071e3, #40b1ff);
-            color: white;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 11px;
-            vertical-align: middle;
+        .summary {
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .total-val { font-size: 24px; font-weight: 700; color: var(--accent); display: block; margin-top: 5px; }
+
+        @media (max-width: 600px) {
+            h1 { font-size: 32px; }
+            .grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -100,147 +91,176 @@
 <div class="container">
     <header>
         <h1>Investiční Lab</h1>
-        <p class="subtitle">Jednoduché nástroje pro vaše finanční rozhodnutí.</p>
+        <p class="subtitle">Přehledné simulace vašich financí.</p>
     </header>
 
     <div class="grid">
         <div class="card">
             <h2>Jednoduché úročení</h2>
-            <div class="input-group">
-                <label>Vklad (Kč)</label>
-                <input type="number" id="simple-principal" value="100000" oninput="calcSimple()">
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Počáteční vklad</label>
+                    <input type="number" id="s-init" value="100000" oninput="updateAll()">
+                </div>
+                <div class="input-group">
+                    <label>Měsíční úložka</label>
+                    <input type="number" id="s-monthly" value="2000" oninput="updateAll()">
+                </div>
             </div>
-            <div class="input-group">
-                <label>Roční úrok (%)</label>
-                <input type="number" id="simple-rate" value="5" oninput="calcSimple()">
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Úrok (% p.a.)</label>
+                    <input type="number" id="s-rate" value="5" oninput="updateAll()">
+                </div>
+                <div class="input-group">
+                    <label>Roky</label>
+                    <input type="number" id="s-years" value="10" oninput="updateAll()">
+                </div>
             </div>
-            <div class="input-group">
-                <label>Doba (roky)</label>
-                <input type="number" id="simple-years" value="10" oninput="calcSimple()">
+            <div class="summary">
+                Budoucí hodnota:
+                <span class="total-val" id="s-total">0 Kč</span>
             </div>
-            <div class="result" id="simple-result">Celkem: 150 000 Kč</div>
+            <div class="chart-container">
+                <canvas id="chartSimple"></canvas>
+            </div>
         </div>
 
         <div class="card">
             <h2>Složené úročení</h2>
-            <div class="input-group">
-                <label>Vklad (Kč)</label>
-                <input type="number" id="comp-principal" value="100000" oninput="calcCompound()">
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Počáteční vklad</label>
+                    <input type="number" id="c-init" value="100000" oninput="updateAll()">
+                </div>
+                <div class="input-group">
+                    <label>Měsíční úložka</label>
+                    <input type="number" id="c-monthly" value="2000" oninput="updateAll()">
+                </div>
             </div>
-            <div class="input-group">
-                <label>Roční úrok (%)</label>
-                <input type="number" id="comp-rate" value="5" oninput="calcCompound()">
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Úrok (% p.a.)</label>
+                    <input type="number" id="c-rate" value="5" oninput="updateAll()">
+                </div>
+                <div class="input-group">
+                    <label>Roky</label>
+                    <input type="number" id="c-years" value="10" oninput="updateAll()">
+                </div>
             </div>
-            <div class="input-group">
-                <label>Doba (roky)</label>
-                <input type="number" id="comp-years" value="10" oninput="calcCompound()">
+            <div class="summary">
+                Budoucí hodnota:
+                <span class="total-val" id="c-total" style="color: #34c759;">0 Kč</span>
             </div>
-            <div class="result" id="comp-result">Celkem: 162 889 Kč</div>
+            <div class="chart-container">
+                <canvas id="chartCompound"></canvas>
+            </div>
         </div>
-<div class="card">
-    <h2>Odhad státního důchodu</h2>
-    <p style="font-size: 13px; color: var(--text-secondary);">Zjednodušený odhad podle aktuálních pravidel v ČR.</p>
-    <div class="input-group">
-        <label>Hrubá měsíční mzda (Kč)</label>
-        <input type="number" id="pension-salary" value="45000" oninput="calcPension()">
-    </div>
-    <div class="input-group">
-        <label>Odpracované roky</label>
-        <input type="number" id="pension-years" value="40" oninput="calcPension()">
-    </div>
-    <div class="result" id="pension-result" style="color: #555;">Odhad: 21 450 Kč</div>
-</div>
 
-        <div class="card" style="grid-column: span 1;">
-            <h2>S&P 500 Simulátor <span class="sp-badge">HISTORICKÝ PRŮMĚR</span></h2>
-            <p style="font-size: 13px; color: var(--text-secondary);">Počítá s průměrným ročním výnosem 10 % (historický průměr indexu).</p>
+        <div class="card">
+            <h2>Odhad státního důchodu</h2>
             <div class="input-group">
-                <label>Počáteční investice (Kč)</label>
-                <input type="number" id="sp-start" value="50000" oninput="calcSP()">
+                <label>Hrubá měsíční mzda</label>
+                <input type="number" id="p-salary" value="45000" oninput="updateAll()">
             </div>
-            <div class="input-group">
-                <label>Měsíční úložka (Kč)</label>
-                <input type="number" id="sp-monthly" value="5000" oninput="calcSP()">
+            <div style="margin-top: 15px;" class="input-group">
+                <label>Odpracované roky</label>
+                <input type="number" id="p-years" value="40" oninput="updateAll()">
             </div>
-            <div class="input-group">
-                <label>Horizont (roky)</label>
-                <input type="number" id="sp-years" value="20" oninput="calcSP()">
+            <div class="summary" style="margin-top: 40px;">
+                Odhadovaný měsíční důchod:
+                <span class="total-val" id="p-total" style="color: #ff9500;">0 Kč</span>
             </div>
-            <div class="result" id="sp-result" style="color: #0071e3;">Budoucí hodnota: 3 711 520 Kč</div>
+            <div class="chart-container">
+                <canvas id="chartPension"></canvas>
+            </div>
         </div>
     </div>
 </div>
-
 
 <script>
-    function calcPension() {
-    const salary = parseFloat(document.getElementById('pension-salary').value) || 0;
-    const years = parseFloat(document.getElementById('pension-years').value) || 0;
+    let charts = {};
 
-    // Parametry pro rok 2024/2025
-    const zakladniVymera = 4400; // Fixní část pro každého
-    const redukcniHranice1 = 19346; // 100 % se započítává do této výše
-    
-    // Zjednodušený výpočet výpočtového základu
-    let vypoctovyZaklad = 0;
-    if (salary <= redukcniHranice1) {
-        vypoctovyZaklad = salary;
-    } else {
-        // Nad první hranici se započítává jen 26 % (zjednodušený model)
-        vypoctovyZaklad = redukcniHranice1 + ((salary - redukcniHranice1) * 0.26);
+    function formatCZK(val) {
+        return new Intl.NumberFormat('cs-CZ').format(Math.round(val)) + " Kč";
     }
 
-    // Procentní výměra: 1.5 % z výpočtového základu za každý rok pojištění
-    const procentniVymera = (vypoctovyZaklad * 0.015) * years;
-    
-    const celkovyDuchod = zakladniVymera + procentniVymera;
-
-    document.getElementById('pension-result').innerText = "Odhad: " + formatMoney(celkovyDuchod);
-}
-
-// Nezapomeň přidat calcPension(); do inicializace na konci scriptu!
-calcPension();
-
-    function formatMoney(num) {
-        return new Intl.NumberFormat('cs-CZ').format(Math.round(num)) + " Kč";
+    function createChart(id, labels, colors) {
+        const ctx = document.getElementById(id).getContext('2d');
+        return new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: [0, 0],
+                    backgroundColor: colors,
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                cutout: '70%',
+                plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 10 } } } }
+            }
+        });
     }
 
-    function calcSimple() {
-        const p = parseFloat(document.getElementById('simple-principal').value) || 0;
-        const r = parseFloat(document.getElementById('simple-rate').value) / 100 || 0;
-        const t = parseFloat(document.getElementById('simple-years').value) || 0;
-        const result = p * (1 + r * t);
-        document.getElementById('simple-result').innerText = "Celkem: " + formatMoney(result);
+    function updateAll() {
+        // --- JEDNODUCHÉ ÚROČENÍ ---
+        const sInit = parseFloat(document.getElementById('s-init').value) || 0;
+        const sMonth = parseFloat(document.getElementById('s-monthly').value) || 0;
+        const sRate = (parseFloat(document.getElementById('s-rate').value) / 100) || 0;
+        const sYears = parseFloat(document.getElementById('s-years').value) || 0;
+
+        const sTotalVklady = sInit + (sMonth * 12 * sYears);
+        // Úrok se počítá jen z vkladů, nepřidává se k základu pro další úročení
+        const sUroky = (sInit * sRate * sYears) + (sMonth * 12 * sRate * (sYears * (sYears + 1) / 2) / sYears * (sYears/2)); 
+        // Zjednodušený model pro lineární úrok z pravidelné úložky
+        const sFinalUrok = (sInit * sRate * sYears) + (sMonth * 12 * sYears * sRate / 2);
+        
+        const sFinal = sTotalVklady + sFinalUrok;
+        document.getElementById('s-total').innerText = formatCZK(sFinal);
+        updateChart('chartSimple', [sTotalVklady, sFinalUrok]);
+
+        // --- SLOŽENÉ ÚROČENÍ ---
+        const cInit = parseFloat(document.getElementById('c-init').value) || 0;
+        const cMonth = parseFloat(document.getElementById('c-monthly').value) || 0;
+        const cRate = (parseFloat(document.getElementById('c-rate').value) / 100) / 12 || 0;
+        const cMonths = (parseFloat(document.getElementById('c-years').value) || 0) * 12;
+
+        const cFVInit = cInit * Math.pow(1 + cRate, cMonths);
+        const cFVMonthly = cMonth * ((Math.pow(1 + cRate, cMonths) - 1) / cRate);
+        const cFinal = cFVInit + (cRate > 0 ? cFVMonthly : cMonth * cMonths);
+        const cVklady = cInit + (cMonth * cMonths);
+        const cUroky = cFinal - cVklady;
+
+        document.getElementById('c-total').innerText = formatCZK(cFinal);
+        updateChart('chartCompound', [cVklady, cUroky]);
+
+        // --- DŮCHOD ---
+        const pSal = parseFloat(document.getElementById('p-salary').value) || 0;
+        const pYears = parseFloat(document.getElementById('p-years').value) || 0;
+        const zaklad = 4400;
+        let vypZaklad = pSal <= 19346 ? pSal : 19346 + ((pSal - 19346) * 0.26);
+        const procVymera = (vypZaklad * 0.015) * pYears;
+        const pFinal = zaklad + procVymera;
+
+        document.getElementById('p-total').innerText = formatCZK(pFinal);
+        updateChart('chartPension', [zaklad, procVymera]);
     }
 
-    function calcCompound() {
-        const p = parseFloat(document.getElementById('comp-principal').value) || 0;
-        const r = parseFloat(document.getElementById('comp-rate').value) / 100 || 0;
-        const t = parseFloat(document.getElementById('comp-years').value) || 0;
-        const result = p * Math.pow((1 + r), t);
-        document.getElementById('comp-result').innerText = "Celkem: " + formatMoney(result);
+    function updateChart(id, data) {
+        charts[id].data.datasets[0].data = data;
+        charts[id].update();
     }
 
-    function calcSP() {
-        const start = parseFloat(document.getElementById('sp-start').value) || 0;
-        const monthly = parseFloat(document.getElementById('sp-monthly').value) || 0;
-        const years = parseFloat(document.getElementById('sp-years').value) || 0;
-        const annualRate = 0.10; // 10% průměr
-        const monthlyRate = Math.pow(1 + annualRate, 1/12) - 1;
-        const months = years * 12;
-
-        // Budoucí hodnota počátečního vkladu
-        const fvStart = start * Math.pow(1 + monthlyRate, months);
-        // Budoucí hodnota pravidelných úložek (anuitní splátka)
-        const fvMonthly = monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
-
-        document.getElementById('sp-result').innerText = "Budoucí hodnota: " + formatMoney(fvStart + fvMonthly);
-    }
-
-    // Inicializace
-    calcSimple();
-    calcCompound();
-    calcSP();
+    // Inicializace grafů
+    window.onload = () => {
+        charts['chartSimple'] = createChart('chartSimple', ['Vklady', 'Zisk'], ['#d2d2d7', '#0071e3']);
+        charts['chartCompound'] = createChart('chartCompound', ['Vklady', 'Zisk'], ['#d2d2d7', '#34c759']);
+        charts['chartPension'] = createChart('chartPension', ['Základ', 'Zásluha'], ['#e5e5e7', '#ff9500']);
+        updateAll();
+    };
 </script>
 
 </body>
