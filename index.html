@@ -111,18 +111,32 @@
     .pie-legend-item   { display: flex; align-items: center; gap: 8px; }
     .pie-legend-dot    { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
 
-    /* ── ESB ── */
+    /* ── ESB Building ── */
     .esb-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
-    .esb-wrapper { position: relative; width: 175px; height: 175px; margin: 16px 0; }
-    .esb-img { width: 125px; height: 125px; border-radius: 50%; position: absolute; top: 25px; left: 25px; object-fit: cover; z-index: 1; }
-    .esb-ring { width: 175px; height: 175px; transform: rotate(-90deg); position: absolute; z-index: 2; }
-    .esb-ring circle { fill: none; stroke-width: 10; stroke-linecap: round; }
-    .ring-bg   { stroke: #f0f0f5; }
-    .ring-fill { stroke: var(--sp500); stroke-dasharray: 534; stroke-dashoffset: 534; transition: stroke-dashoffset 1.2s ease-out; }
+
+    .esb-building-wrap {
+        position: relative;
+        width: 140px;
+        height: 220px;
+        margin: 10px auto;
+    }
+    /* SVG budovy */
+    .esb-building-wrap svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+    }
+    /* Šedá základna (nevyplněná část) */
+    .esb-base { fill: #d1d1d6; }
+    /* Červená výplň (clipovaná zdola = přibývá od základny nahoru) */
+    .esb-filled { fill: var(--sp500); }
+    /* Tenká bílá linka na přechodu */
+    .esb-waterline { stroke: #fff; stroke-width: 1.5; fill: none; opacity: 0; transition: opacity 0.3s; }
 
     .status-box {
         background: var(--bg); border-radius: 14px; padding: 14px;
-        margin-top: 12px; width: 100%; font-size: 13px;
+        margin-top: 8px; width: 100%; font-size: 13px;
         min-height: 72px; display: flex; align-items: center; justify-content: center;
     }
     #esb-status { font-weight: 600; margin: 0; line-height: 1.5; }
@@ -192,16 +206,20 @@
 
         <div class="results-row">
             <div class="result-item">
-                <label>Hodnota portfolia (USD)</label>
-                <span id="res-usd" class="result-big c-sp500">$0</span>
+                <label>Hodnota portfolia (CZK)</label>
+                <span id="res-czk" class="result-big c-sp500">0 Kč</span>
             </div>
             <div class="result-item">
-                <label>Hodnota v CZK</label>
-                <span id="res-czk" class="result-small">0 Kč</span>
+                <label>Celkem v USD</label>
+                <span id="res-usd" class="result-small">$0</span>
             </div>
             <div class="result-item">
-                <label>Celkem vloženo</label>
-                <span id="res-invested" class="result-small">$0</span>
+                <label>Celkem vloženo (CZK)</label>
+                <span id="res-invested" class="result-small">0 Kč</span>
+            </div>
+            <div class="result-item">
+                <label>Zisk (CZK)</label>
+                <span id="res-profit" class="result-small">0 Kč</span>
             </div>
         </div>
 
@@ -210,15 +228,53 @@
 
     <div class="card esb-card">
         <span class="section-label sp500">Empire State Building</span>
-        <div class="esb-wrapper">
-            <svg class="esb-ring" viewBox="0 0 175 175">
-                <circle class="ring-bg" cx="87.5" cy="87.5" r="82"></circle>
-                <circle id="ring-fill" class="ring-fill" cx="87.5" cy="87.5" r="82" style="stroke-dasharray:515;stroke-dashoffset:515;"></circle>
+
+        <!-- SVG silueta ESB, výplň přibývá zdola nahoru -->
+        <div class="esb-building-wrap">
+            <svg viewBox="0 0 140 220" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <!-- Tvar siluety Empire State Building (zjednodušený) -->
+                    <path id="esb-path" d="
+                        M 5 220 L 135 220 L 135 172 L 120 172 L 120 158
+                        L 110 158 L 110 144 L 100 144 L 100 124
+                        L  90 124 L  90 105 L  82 105 L  82  88
+                        L  76  88 L  76  72 L  71  72 L  71  57
+                        L  67  57 L  67  43 L  64  43 L  64  30
+                        L  67  30 L  67  22 L  70  22 L  70  15
+                        L  68  15 L  68   8 L  70   8 L  70   3
+                        L  70   0 L  70   3 L  72   3 L  72   8
+                        L  74   8 L  74  15 L  72  15 L  72  22
+                        L  75  22 L  75  30 L  78  30 L  78  43
+                        L  75  43 L  75  57 L  71  57 L  71  72
+                        L  66  72 L  66  88 L  60  88 L  60 105
+                        L  52 105 L  52 124 L  42 124 L  42 144
+                        L  32 144 L  32 158 L  22 158 L  22 172
+                        L   5 172 Z
+                    "/>
+                    <clipPath id="esb-shape-clip2">
+                        <use href="#esb-path"/>
+                    </clipPath>
+                    <!-- Obdélník pro výplň (y a height se animují) -->
+                    <clipPath id="esb-fill-clip">
+                        <rect id="esb-fill-rect" x="0" y="220" width="140" height="0"/>
+                    </clipPath>
+                </defs>
+
+                <!-- Šedá budova (podklad) -->
+                <use href="#esb-path" class="esb-base"/>
+
+                <!-- Červená výplň klipovaná zdola nahoru -->
+                <g clip-path="url(#esb-fill-clip)">
+                    <use href="#esb-path" class="esb-filled"/>
+                </g>
+
+                <!-- Přechodová linka -->
+                <line id="esb-waterline" class="esb-waterline" x1="0" y1="220" x2="140" y2="220"/>
             </svg>
-            <img src="https://images.unsplash.com/photo-1555109307-f7d9d22a5de8?q=80&w=300&auto=format&fit=crop" class="esb-img">
         </div>
-        <div id="esb-perc" style="font-size:28px;font-weight:800;color:var(--sp500);">0.0000%</div>
-        <p style="font-size:12px;color:var(--text-secondary);margin:4px 0 0;">podíl na budově ($2,2 mld.)</p>
+
+        <div id="esb-perc" style="font-size:28px;font-weight:800;color:var(--sp500);margin-top:4px;">0.0000%</div>
+        <p style="font-size:12px;color:var(--text-secondary);margin:3px 0 0;">podíl na budově ($2,2 mld.)</p>
         <p id="esb-fraction" style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;"></p>
         <div class="status-box">
             <p id="esb-status">Zatím ti nepatří ani klika.</p>
@@ -373,7 +429,7 @@
 <div class="cs-banner">
     <h2>Každá investice začíná jedním krokem</h2>
     <p>Otevřete si účet u České spořitelny a začněte investovat do fondů, akcií nebo ETF — online, bez poboček.</p>
-    <a href="https://www.csas.cz/cs/osobni-finance/investice.html" target="_blank" class="cs-btn">
+    <a href="https://www.csas.cz/cs/osobni-finance/investovani" target="_blank" class="cs-btn">
         🏦 Začít investovat u České spořitelny →
     </a>
 </div>
@@ -470,31 +526,93 @@ function calculateBackwards() {
 
     document.getElementById('res-usd').innerText = fU(total);
     document.getElementById('res-czk').innerText = fK(total * fx);
-    document.getElementById('res-invested').innerText = fU(invested);
+    document.getElementById('res-invested').innerText = fK(invested * fx);
+    document.getElementById('res-profit').innerText = fK((total - invested) * fx);
 
     if (mainChart) mainChart.destroy();
     const ctx = document.getElementById('mainChart').getContext('2d');
+    // Graf v CZK, logaritmická osa pro lepší viditelnost raných výkyvů
+    const chartDataCZK = chartData.map(v => Math.round(v * fx));
+    const investedDataCZK = labels.map((_,i) => Math.round(i * m * 12 * fx));
     mainChart = new Chart(ctx, {
         type: 'line',
         data: {
             labels,
             datasets: [
-                { label: 'Hodnota portfolia ($)', data: chartData, borderColor: '#ff3b30', backgroundColor: 'rgba(255,59,48,0.10)', fill: true, tension: 0.3, pointRadius: years > 40 ? 0 : 3, order: 1 },
-                { label: 'Vloženo ($)', data: labels.map((_,i) => i * m * 12), borderColor: '#86868b', backgroundColor: 'rgba(134,134,139,0.08)', fill: true, tension: 0.1, borderDash: [5,4], pointRadius: 0, order: 2 }
+                {
+                    label: 'Hodnota portfolia (Kč)',
+                    data: chartDataCZK,
+                    borderColor: '#ff3b30',
+                    backgroundColor: 'rgba(255,59,48,0.10)',
+                    fill: true, tension: 0.3,
+                    pointRadius: years > 40 ? 0 : 3, order: 1
+                },
+                {
+                    label: 'Vloženo (Kč)',
+                    data: investedDataCZK,
+                    borderColor: '#86868b',
+                    backgroundColor: 'rgba(134,134,139,0.08)',
+                    fill: true, tension: 0.1,
+                    borderDash: [5,4], pointRadius: 0, order: 2
+                }
             ]
         },
         options: {
             maintainAspectRatio: false,
             interaction: { mode: 'index', intersect: false },
-            scales: { y: { ticks: { callback: v => fU(v) } } },
-            plugins: { tooltip: { callbacks: { label: c => `${c.dataset.label}: ${fU(c.parsed.y)}` } } }
+            scales: {
+                y: {
+                    type: 'logarithmic',
+                    ticks: {
+                        callback: v => {
+                            // Zobrazit jen pěkné hodnoty na log ose
+                            const log = Math.log10(v);
+                            if (Math.abs(log - Math.round(log)) < 0.01 || v === 0) return fK(v);
+                            // Zobrazit i půlky (3x10^n)
+                            const mantissa = v / Math.pow(10, Math.floor(log));
+                            if (Math.abs(mantissa - 3) < 0.1) return fK(v);
+                            return null;
+                        }
+                    },
+                    title: { display: true, text: 'Logaritmická osa (Kč)', color: '#86868b', font: { size: 11 } }
+                }
+            },
+            plugins: {
+                tooltip: { callbacks: { label: c => `${c.dataset.label}: ${fK(c.parsed.y)}` } },
+                legend: { display: true }
+            }
         }
     });
 
     const esbPerc = (total / ESB_VALUE) * 100;
-    const circumference = 515;
     document.getElementById('esb-perc').innerText = esbPerc.toFixed(4) + '%';
-    document.getElementById('ring-fill').style.strokeDashoffset = circumference - circumference * Math.min(esbPerc / 100, 1);
+
+    // Animace budovy: obdélník se zvedá zdola nahoru (y klesá, height roste)
+    // Celková výška SVG budovy = 220, plníme od zdola
+    const buildingH = 220;
+    const fillH = Math.min(esbPerc / 100, 1) * buildingH;
+    const fillY = buildingH - fillH;
+    const rect = document.getElementById('esb-fill-rect');
+    // Plynulá animace přes CSS transition na atributu (pomocí style)
+    rect.style.transition = 'none';
+    // Animujeme JS-em v requestAnimationFrame pro smooth efekt
+    const startY = parseFloat(rect.getAttribute('y') || buildingH);
+    const startH = parseFloat(rect.getAttribute('height') || 0);
+    const endY = fillY, endH = fillH;
+    const dur = 1200, t0 = performance.now();
+    function animateESB(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        rect.setAttribute('y', startY + (endY - startY) * ease);
+        rect.setAttribute('height', startH + (endH - startH) * ease);
+        const wl = document.getElementById('esb-waterline');
+        const curY = startY + (endY - startY) * ease;
+        wl.setAttribute('y1', curY); wl.setAttribute('y2', curY);
+        wl.style.opacity = fillH > 2 ? '0.7' : '0';
+        if (p < 1) requestAnimationFrame(animateESB);
+    }
+    requestAnimationFrame(animateESB);
+
     const sqm = (total / ESB_VALUE) * 257000;
     document.getElementById('esb-fraction').innerText = sqm >= 1 ? `≈ ${sqm.toFixed(0)} m² z 257 000 m²` : '';
     document.getElementById('esb-status').innerText = getEsbStatus(total, esbPerc);
