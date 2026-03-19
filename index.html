@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="cs">
 <head>
     <meta charset="UTF-8">
@@ -13,427 +12,498 @@
             --text: #1d1d1f;
             --text-secondary: #86868b;
 
-```
-        /* Barvy sekcí */
-        --sp500:   #ff3b30;
-        --sp500-lt: rgba(255,59,48,0.10);
-        --compound: #34c759;
-        --compound-lt: rgba(52,199,89,0.12);
-        --simple:   #ff9500;
-        --simple-lt: rgba(255,149,0,0.12);
-        --pension:  #5856d6;
-        --pension-lt: rgba(88,86,214,0.12);
-    }
+            /* Barvy sekcí */
+            --sp500:   #ff3b30;
+            --sp500-lt: rgba(255,59,48,0.10);
+            --compound: #34c759;
+            --compound-lt: rgba(52,199,89,0.12);
+            --simple:   #ff9500;
+            --simple-lt: rgba(255,149,0,0.12);
+            --pension:  #5856d6;
+            --pension-lt: rgba(88,86,214,0.12);
+            --renta:    #00b5ad;
+            --renta-lt: rgba(0,181,173,0.12);
+        }
 
-    * { box-sizing: border-box; }
+        * { box-sizing: border-box; }
 
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-        background-color: var(--bg);
-        color: var(--text);
-        margin: 0;
-        padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-    .container { max-width: 1200px; width: 100%; }
+        .container { max-width: 1200px; width: 100%; }
 
-    header { text-align: center; margin-bottom: 36px; }
-    header h1 { margin: 0 0 8px; font-size: 28px; }
-    header p { color: var(--text-secondary); margin: 0; }
+        header { text-align: center; margin-bottom: 36px; }
+        header h1 { margin: 0 0 8px; font-size: 28px; }
+        header p { color: var(--text-secondary); margin: 0; }
 
-    /* ── Sekční hlavičky ── */
-    .section-label {
-        display: inline-block;
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        padding: 4px 12px;
-        border-radius: 20px;
-        color: #fff;
-        margin-bottom: 14px;
-    }
-    .section-label.sp500   { background: var(--sp500); }
-    .section-label.compound{ background: var(--compound); }
-    .section-label.simple  { background: var(--simple); }
-    .section-label.pension { background: var(--pension); }
+        /* ── Sekční hlavičky ── */
+        .section-label {
+            display: inline-block;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 20px;
+            color: #fff;
+            margin-bottom: 14px;
+        }
+        .section-label.sp500   { background: var(--sp500); }
+        .section-label.compound{ background: var(--compound); }
+        .section-label.simple  { background: var(--simple); }
+        .section-label.pension { background: var(--pension); }
+        .section-label.renta   { background: var(--renta); }
 
-    /* ── Karty ── */
-    .card {
-        background: var(--card-bg);
-        border-radius: 24px;
-        padding: 28px;
-        box-shadow: 0 8px 32px rgba(0,0,0,0.06);
-    }
+        /* ── Karty ── */
+        .card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 28px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.06);
+        }
 
-    /* ── Gridy ── */
-    .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 28px; }
-    .two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
-    .one-col   { margin-bottom: 28px; }
+        /* ── Gridy ── */
+        .main-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 28px; }
+        .two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+        .one-col   { margin-bottom: 28px; }
 
-    /* ── Inputs ── */
-    .input-row   { display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
-    .input-group { flex: 1; min-width: 130px; }
-    label { display: block; font-size: 11px; color: var(--text-secondary); margin-bottom: 5px; text-transform: uppercase; font-weight: 700; }
-    input, select {
-        width: 100%; padding: 11px 12px; border-radius: 10px;
-        border: 1px solid #d2d2d7; font-size: 15px; outline: none; background: #fff;
-    }
+        /* ── Inputs ── */
+        .input-row   { display: flex; gap: 14px; margin-bottom: 18px; flex-wrap: wrap; }
+        .input-group { flex: 1; min-width: 130px; }
+        label { display: block; font-size: 11px; color: var(--text-secondary); margin-bottom: 5px; text-transform: uppercase; font-weight: 700; }
+        input, select {
+            width: 100%; padding: 11px 12px; border-radius: 10px;
+            border: 1px solid #d2d2d7; font-size: 15px; outline: none; background: #fff;
+        }
 
-    /* ── Tlačítka ── */
-    .calc-btn {
-        color: white; border: none; padding: 14px; border-radius: 12px;
-        font-size: 16px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.2s;
-    }
-    .calc-btn:hover { filter: brightness(0.9); transform: scale(1.01); }
-    .btn-sp500    { background: var(--sp500); }
-    .btn-compound { background: var(--compound); }
-    .btn-simple   { background: var(--simple); }
-    .btn-pension  { background: var(--pension); }
+        /* ── Tlačítka ── */
+        .calc-btn {
+            color: white; border: none; padding: 14px; border-radius: 12px;
+            font-size: 16px; font-weight: 700; cursor: pointer; width: 100%; transition: 0.2s;
+        }
+        .calc-btn:hover { filter: brightness(0.9); transform: scale(1.01); }
+        .btn-sp500    { background: var(--sp500); }
+        .btn-compound { background: var(--compound); }
+        .btn-simple   { background: var(--simple); }
+        .btn-pension  { background: var(--pension); }
+        .btn-renta    { background: var(--renta); }
 
-    /* ── Výsledkové čísla ── */
-    .results-row { display: flex; gap: 24px; margin-top: 18px; border-top: 1px solid #eee; padding-top: 18px; flex-wrap: wrap; }
-    .result-item {}
-    .result-big  { font-size: 28px; font-weight: 800; display: block; line-height: 1.1; }
-    .result-small{ font-size: 18px; font-weight: 600; color: var(--text-secondary); display: block; }
-    .c-sp500    { color: var(--sp500); }
-    .c-compound { color: var(--compound); }
-    .c-simple   { color: var(--simple); }
-    .c-pension  { color: var(--pension); }
+        /* ── Výsledkové čísla ── */
+        .results-row { display: flex; gap: 24px; margin-top: 18px; border-top: 1px solid #eee; padding-top: 18px; flex-wrap: wrap; }
+        .result-item {}
+        .result-big  { font-size: 28px; font-weight: 800; display: block; line-height: 1.1; }
+        .result-small{ font-size: 18px; font-weight: 600; color: var(--text-secondary); display: block; }
+        .c-sp500    { color: var(--sp500); }
+        .c-compound { color: var(--compound); }
+        .c-simple   { color: var(--simple); }
+        .c-pension  { color: var(--pension); }
+        .c-renta    { color: var(--renta); }
 
-    /* ── Grafy ── */
-    .chart-container   { height: 380px; margin-top: 18px; }
-    .pie-container     { height: 220px; margin-top: 14px; }
-    .pie-legend        { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
-    .pie-legend-item   { display: flex; align-items: center; gap: 8px; }
-    .pie-legend-dot    { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
+        /* ── Grafy ── */
+        .chart-container   { height: 380px; margin-top: 18px; }
+        .pie-container     { height: 220px; margin-top: 14px; }
+        .pie-legend        { margin-top: 12px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; }
+        .pie-legend-item   { display: flex; align-items: center; gap: 8px; }
+        .pie-legend-dot    { width: 12px; height: 12px; border-radius: 3px; flex-shrink: 0; }
 
-    /* ── ESB Building ── */
-    .esb-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        /* ── ESB Building ── */
+        .esb-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
 
-    .esb-building-wrap {
-        position: relative;
-        width: 140px;
-        height: 220px;
-        margin: 10px auto;
-    }
-    /* SVG budovy */
-    .esb-building-wrap svg {
-        width: 100%;
-        height: 100%;
-        overflow: visible;
-        filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
-    }
-    /* Šedá základna (nevyplněná část) */
-    .esb-base { fill: #d1d1d6; }
-    /* Červená výplň (clipovaná zdola = přibývá od základny nahoru) */
-    .esb-filled { fill: var(--sp500); }
-    /* Tenká bílá linka na přechodu */
-    .esb-waterline { stroke: #fff; stroke-width: 1.5; fill: none; opacity: 0; transition: opacity 0.3s; }
+        .esb-building-wrap {
+            position: relative;
+            width: 140px;
+            height: 220px;
+            margin: 10px auto;
+        }
+        /* SVG budovy */
+        .esb-building-wrap svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
+            filter: drop-shadow(0 4px 12px rgba(0,0,0,0.15));
+        }
+        /* Šedá základna (nevyplněná část) */
+        .esb-base { fill: #d1d1d6; }
+        /* Červená výplň (clipovaná zdola = přibývá od základny nahoru) */
+        .esb-filled { fill: var(--sp500); }
+        /* Tenká bílá linka na přechodu */
+        .esb-waterline { stroke: #fff; stroke-width: 1.5; fill: none; opacity: 0; transition: opacity 0.3s; }
 
-    .status-box {
-        background: var(--bg); border-radius: 14px; padding: 14px;
-        margin-top: 8px; width: 100%; font-size: 13px;
-        min-height: 72px; display: flex; align-items: center; justify-content: center;
-    }
-    #esb-status { font-weight: 600; margin: 0; line-height: 1.5; }
+        .status-box {
+            background: var(--bg); border-radius: 14px; padding: 14px;
+            margin-top: 8px; width: 100%; font-size: 13px;
+            min-height: 72px; display: flex; align-items: center; justify-content: center;
+        }
+        #esb-status { font-weight: 600; margin: 0; line-height: 1.5; }
 
-    /* ── Info boxy pod kalkulačkami ── */
-    .info-box {
-        border-radius: 14px; padding: 14px 16px; margin-top: 14px;
-        font-size: 13px; font-weight: 500; line-height: 1.5;
-    }
-    .info-box.compound { background: var(--compound-lt); color: #1a6b2e; }
-    .info-box.simple   { background: var(--simple-lt);   color: #7a4400; }
-    .info-box.pension  { background: var(--pension-lt);  color: #2d2b7a; }
+        /* ── Info boxy pod kalkulačkami ── */
+        .info-box {
+            border-radius: 14px; padding: 14px 16px; margin-top: 14px;
+            font-size: 13px; font-weight: 500; line-height: 1.5;
+        }
+        .info-box.compound { background: var(--compound-lt); color: #1a6b2e; }
+        .info-box.simple   { background: var(--simple-lt);   color: #7a4400; }
+        .info-box.pension  { background: var(--pension-lt);  color: #2d2b7a; }
+        .info-box.renta    { background: var(--renta-lt);    color: #005450; }
 
-    /* ── Spořitelna banner ── */
-    .cs-banner {
-        background: linear-gradient(135deg, #003a8c 0%, #0050c8 60%, #0071e3 100%);
-        border-radius: 24px;
-        padding: 32px 40px;
-        text-align: center;
-        color: white;
-        margin-bottom: 28px;
-    }
-    .cs-banner h2 { margin: 0 0 8px; font-size: 22px; }
-    .cs-banner p  { margin: 0 0 22px; opacity: 0.85; font-size: 15px; }
-    .cs-btn {
-        display: inline-block;
-        background: #fff;
-        color: #003a8c;
-        font-weight: 800;
-        font-size: 16px;
-        padding: 14px 36px;
-        border-radius: 50px;
-        text-decoration: none;
-        transition: 0.2s;
-        letter-spacing: 0.01em;
-    }
-    .cs-btn:hover { background: #e8f0ff; transform: scale(1.03); }
+        /* ── Spořitelna banner ── */
+        .cs-banner {
+            background: linear-gradient(135deg, #003a8c 0%, #0050c8 60%, #0071e3 100%);
+            border-radius: 24px;
+            padding: 32px 40px;
+            text-align: center;
+            color: white;
+            margin-bottom: 28px;
+        }
+        .cs-banner h2 { margin: 0 0 8px; font-size: 22px; }
+        .cs-banner p  { margin: 0 0 22px; opacity: 0.85; font-size: 15px; }
+        .cs-btn {
+            display: inline-block;
+            background: #fff;
+            color: #003a8c;
+            font-weight: 800;
+            font-size: 16px;
+            padding: 14px 36px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: 0.2s;
+            letter-spacing: 0.01em;
+        }
+        .cs-btn:hover { background: #e8f0ff; transform: scale(1.03); }
 
-    @media (max-width: 900px) {
-        .main-grid, .two-col { grid-template-columns: 1fr; }
-    }
-</style>
-```
-
+        @media (max-width: 900px) {
+            .main-grid, .two-col { grid-template-columns: 1fr; }
+        }
+    </style>
 </head>
 <body>
 <div class="container">
 
-```
-<header>
-    <h1>📊 Investiční Lab</h1>
-    <p>Pohled zpět z roku 2026 · Složené vs. jednoduché úročení · Důchodová kalkulačka</p>
-</header>
+    <header>
+        <h1>📊 Investiční Lab</h1>
+        <p>Pohled zpět z roku 2026 · Složené vs. jednoduché úročení · Důchodová kalkulačka</p>
+    </header>
 
-<!-- ═══════════════════════════════════════════
-     SEKCE 1: S&P 500 historická rekonstrukce
-════════════════════════════════════════════ -->
-<div class="main-grid">
-    <div class="card">
-        <span class="section-label sp500">S&P 500 · Historická rekonstrukce</span>
-        <div class="input-row">
-            <div class="input-group"><label>Měsíční vklad (USD)</label><input type="number" id="sp-monthly" value="1000"></div>
-            <div class="input-group"><label>Investovat po dobu (let)</label><input type="number" id="sp-years" value="30" max="100"></div>
-            <div class="input-group"><label>Kurz CZK/USD</label><input type="number" id="sp-fx" value="23.5"></div>
-        </div>
-        <button class="calc-btn btn-sp500" onclick="calculateBackwards()">Vypočítat k 1. 1. 2026</button>
-
-        <div class="results-row">
-            <div class="result-item">
-                <label>Hodnota portfolia (CZK)</label>
-                <span id="res-czk" class="result-big c-sp500">0 Kč</span>
+    <!-- ═══════════════════════════════════════════
+         SEKCE 1: S&P 500 historická rekonstrukce
+    ════════════════════════════════════════════ -->
+    <div class="main-grid">
+        <div class="card">
+            <span class="section-label sp500">S&P 500 · Historická rekonstrukce</span>
+            <div class="input-row">
+                <div class="input-group"><label>Měsíční vklad (USD)</label><input type="number" id="sp-monthly" value="1000"></div>
+                <div class="input-group"><label>Investovat po dobu (let)</label><input type="number" id="sp-years" value="30" max="100"></div>
+                <div class="input-group"><label>Kurz CZK/USD</label><input type="number" id="sp-fx" value="23.5"></div>
             </div>
-            <div class="result-item">
-                <label>Celkem v USD</label>
-                <span id="res-usd" class="result-small">$0</span>
+            <button class="calc-btn btn-sp500" onclick="calculateBackwards()">Vypočítat k 1. 1. 2026</button>
+
+            <div class="results-row">
+                <div class="result-item">
+                    <label>Hodnota portfolia (CZK)</label>
+                    <span id="res-czk" class="result-big c-sp500">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Celkem v USD</label>
+                    <span id="res-usd" class="result-small">$0</span>
+                </div>
+                <div class="result-item">
+                    <label>Celkem vloženo (CZK)</label>
+                    <span id="res-invested" class="result-small">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Zisk (CZK)</label>
+                    <span id="res-profit" class="result-small">0 Kč</span>
+                </div>
             </div>
-            <div class="result-item">
-                <label>Celkem vloženo (CZK)</label>
-                <span id="res-invested" class="result-small">0 Kč</span>
-            </div>
-            <div class="result-item">
-                <label>Zisk (CZK)</label>
-                <span id="res-profit" class="result-small">0 Kč</span>
-            </div>
-        </div>
 
-        <div class="chart-container"><canvas id="mainChart"></canvas></div>
-    </div>
-
-    <div class="card esb-card">
-        <span class="section-label sp500">Empire State Building</span>
-
-        <!-- SVG silueta ESB, výplň přibývá zdola nahoru -->
-        <div class="esb-building-wrap">
-            <svg viewBox="0 0 140 220" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                    <!-- Tvar siluety Empire State Building (zjednodušený) -->
-                    <path id="esb-path" d="
-                        M 5 220 L 135 220 L 135 172 L 120 172 L 120 158
-                        L 110 158 L 110 144 L 100 144 L 100 124
-                        L  90 124 L  90 105 L  82 105 L  82  88
-                        L  76  88 L  76  72 L  71  72 L  71  57
-                        L  67  57 L  67  43 L  64  43 L  64  30
-                        L  67  30 L  67  22 L  70  22 L  70  15
-                        L  68  15 L  68   8 L  70   8 L  70   3
-                        L  70   0 L  70   3 L  72   3 L  72   8
-                        L  74   8 L  74  15 L  72  15 L  72  22
-                        L  75  22 L  75  30 L  78  30 L  78  43
-                        L  75  43 L  75  57 L  71  57 L  71  72
-                        L  66  72 L  66  88 L  60  88 L  60 105
-                        L  52 105 L  52 124 L  42 124 L  42 144
-                        L  32 144 L  32 158 L  22 158 L  22 172
-                        L   5 172 Z
-                    "/>
-                    <clipPath id="esb-shape-clip2">
-                        <use href="#esb-path"/>
-                    </clipPath>
-                    <!-- Obdélník pro výplň (y a height se animují) -->
-                    <clipPath id="esb-fill-clip">
-                        <rect id="esb-fill-rect" x="0" y="220" width="140" height="0"/>
-                    </clipPath>
-                </defs>
-
-                <!-- Šedá budova (podklad) -->
-                <use href="#esb-path" class="esb-base"/>
-
-                <!-- Červená výplň klipovaná zdola nahoru -->
-                <g clip-path="url(#esb-fill-clip)">
-                    <use href="#esb-path" class="esb-filled"/>
-                </g>
-
-                <!-- Přechodová linka -->
-                <line id="esb-waterline" class="esb-waterline" x1="0" y1="220" x2="140" y2="220"/>
-            </svg>
+            <div class="chart-container"><canvas id="mainChart"></canvas></div>
         </div>
 
-        <div id="esb-perc" style="font-size:28px;font-weight:800;color:var(--sp500);margin-top:4px;">0.0000%</div>
-        <p style="font-size:12px;color:var(--text-secondary);margin:3px 0 0;">podíl na budově ($2,2 mld.)</p>
-        <p id="esb-fraction" style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;"></p>
-        <div class="status-box">
-            <p id="esb-status">Zatím ti nepatří ani klika.</p>
-        </div>
-    </div>
-</div>
+        <div class="card esb-card">
+            <span class="section-label sp500">Empire State Building</span>
 
-<!-- ═══════════════════════════════════════════
-     SEKCE 2: Složené vs. jednoduché úročení
-════════════════════════════════════════════ -->
-<div class="two-col">
+            <!-- SVG silueta ESB, výplň přibývá zdola nahoru -->
+            <div class="esb-building-wrap">
+                <svg viewBox="0 0 140 220" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <!-- Tvar siluety Empire State Building (zjednodušený) -->
+                        <path id="esb-path" d="
+                            M 5 220 L 135 220 L 135 172 L 120 172 L 120 158
+                            L 110 158 L 110 144 L 100 144 L 100 124
+                            L  90 124 L  90 105 L  82 105 L  82  88
+                            L  76  88 L  76  72 L  71  72 L  71  57
+                            L  67  57 L  67  43 L  64  43 L  64  30
+                            L  67  30 L  67  22 L  70  22 L  70  15
+                            L  68  15 L  68   8 L  70   8 L  70   3
+                            L  70   0 L  70   3 L  72   3 L  72   8
+                            L  74   8 L  74  15 L  72  15 L  72  22
+                            L  75  22 L  75  30 L  78  30 L  78  43
+                            L  75  43 L  75  57 L  71  57 L  71  72
+                            L  66  72 L  66  88 L  60  88 L  60 105
+                            L  52 105 L  52 124 L  42 124 L  42 144
+                            L  32 144 L  32 158 L  22 158 L  22 172
+                            L   5 172 Z
+                        "/>
+                        <clipPath id="esb-shape-clip2">
+                            <use href="#esb-path"/>
+                        </clipPath>
+                        <!-- Obdélník pro výplň (y a height se animují) -->
+                        <clipPath id="esb-fill-clip">
+                            <rect id="esb-fill-rect" x="0" y="220" width="140" height="0"/>
+                        </clipPath>
+                    </defs>
 
-    <!-- Složené úročení -->
-    <div class="card">
-        <span class="section-label compound">Složené úročení</span>
-        <div class="input-row">
-            <div class="input-group"><label>Počáteční vklad (Kč)</label><input type="number" id="c-principal" value="100000"></div>
-            <div class="input-group"><label>Roční sazba (%)</label><input type="number" id="c-rate" value="7" step="0.1"></div>
-            <div class="input-group"><label>Doba (let)</label><input type="number" id="c-years" value="20"></div>
-        </div>
-        <div class="input-row">
-            <div class="input-group"><label>Měsíční příspěvek (Kč)</label><input type="number" id="c-monthly" value="2000"></div>
-            <div class="input-group"><label>Frekvence úročení</label>
-                <select id="c-freq">
-                    <option value="1">Ročně</option>
-                    <option value="4">Čtvrtletně</option>
-                    <option value="12" selected>Měsíčně</option>
-                    <option value="365">Denně</option>
-                </select>
+                    <!-- Šedá budova (podklad) -->
+                    <use href="#esb-path" class="esb-base"/>
+
+                    <!-- Červená výplň klipovaná zdola nahoru -->
+                    <g clip-path="url(#esb-fill-clip)">
+                        <use href="#esb-path" class="esb-filled"/>
+                    </g>
+
+                    <!-- Přechodová linka -->
+                    <line id="esb-waterline" class="esb-waterline" x1="0" y1="220" x2="140" y2="220"/>
+                </svg>
             </div>
-        </div>
-        <button class="calc-btn btn-compound" onclick="calcCompound()">Vypočítat</button>
-        <div class="results-row">
-            <div class="result-item">
-                <label>Konečná hodnota</label>
-                <span id="c-final" class="result-big c-compound">0 Kč</span>
+
+            <div id="esb-perc" style="font-size:28px;font-weight:800;color:var(--sp500);margin-top:4px;">0.0000%</div>
+            <p style="font-size:12px;color:var(--text-secondary);margin:3px 0 0;">podíl na budově ($2,2 mld.)</p>
+            <p id="esb-fraction" style="font-size:12px;color:var(--text-secondary);margin:2px 0 0;"></p>
+            <div class="status-box">
+                <p id="esb-status">Zatím ti nepatří ani klika.</p>
             </div>
-            <div class="result-item">
-                <label>Výnos (zisk)</label>
-                <span id="c-profit" class="result-small">0 Kč</span>
-            </div>
-            <div class="result-item">
-                <label>Vloženo celkem</label>
-                <span id="c-invested" class="result-small">0 Kč</span>
-            </div>
-        </div>
-        <div class="pie-container"><canvas id="compoundPie"></canvas></div>
-        <div id="compound-legend" class="pie-legend"></div>
-        <div class="info-box compound">
-            💡 Složené úročení = úroky se přičítají k jistině a samy vydělávají. Čím déle investuješ, tím silnější efekt.
         </div>
     </div>
 
-    <!-- Jednoduché úročení -->
-    <div class="card">
-        <span class="section-label simple">Jednoduché úročení</span>
-        <div class="input-row">
-            <div class="input-group"><label>Počáteční vklad (Kč)</label><input type="number" id="s-principal" value="100000"></div>
-            <div class="input-group"><label>Roční sazba (%)</label><input type="number" id="s-rate" value="7" step="0.1"></div>
-            <div class="input-group"><label>Doba (let)</label><input type="number" id="s-years" value="20"></div>
-        </div>
-        <div class="input-row">
-            <div class="input-group"><label>Měsíční příspěvek (Kč)</label><input type="number" id="s-monthly" value="2000"></div>
-        </div>
-        <button class="calc-btn btn-simple" onclick="calcSimple()">Vypočítat</button>
-        <div class="results-row">
-            <div class="result-item">
-                <label>Konečná hodnota</label>
-                <span id="s-final" class="result-big c-simple">0 Kč</span>
+    <!-- ═══════════════════════════════════════════
+         SEKCE 2: Složené vs. jednoduché úročení
+    ════════════════════════════════════════════ -->
+    <div class="two-col">
+
+        <!-- Složené úročení -->
+        <div class="card">
+            <span class="section-label compound">Složené úročení</span>
+            <div class="input-row">
+                <div class="input-group"><label>Počáteční vklad (Kč)</label><input type="number" id="c-principal" value="100000"></div>
+                <div class="input-group"><label>Roční sazba (%)</label><input type="number" id="c-rate" value="7" step="0.1"></div>
+                <div class="input-group"><label>Doba (let)</label><input type="number" id="c-years" value="20"></div>
             </div>
-            <div class="result-item">
-                <label>Výnos (zisk)</label>
-                <span id="s-profit" class="result-small">0 Kč</span>
+            <div class="input-row">
+                <div class="input-group"><label>Měsíční příspěvek (Kč)</label><input type="number" id="c-monthly" value="2000"></div>
+                <div class="input-group"><label>Frekvence úročení</label>
+                    <select id="c-freq">
+                        <option value="1">Ročně</option>
+                        <option value="4">Čtvrtletně</option>
+                        <option value="12" selected>Měsíčně</option>
+                        <option value="365">Denně</option>
+                    </select>
+                </div>
             </div>
-            <div class="result-item">
-                <label>Vloženo celkem</label>
-                <span id="s-invested" class="result-small">0 Kč</span>
+            <button class="calc-btn btn-compound" onclick="calcCompound()">Vypočítat</button>
+            <div class="results-row">
+                <div class="result-item">
+                    <label>Konečná hodnota</label>
+                    <span id="c-final" class="result-big c-compound">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Výnos (zisk)</label>
+                    <span id="c-profit" class="result-small">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Vloženo celkem</label>
+                    <span id="c-invested" class="result-small">0 Kč</span>
+                </div>
+            </div>
+            <div class="pie-container"><canvas id="compoundPie"></canvas></div>
+            <div id="compound-legend" class="pie-legend"></div>
+            <div class="info-box compound">
+                💡 Složené úročení = úroky se přičítají k jistině a samy vydělávají. Čím déle investuješ, tím silnější efekt.
             </div>
         </div>
-        <div class="pie-container"><canvas id="simplePie"></canvas></div>
-        <div id="simple-legend" class="pie-legend"></div>
-        <div class="info-box simple">
-            ⚠️ Jednoduché úročení = úroky se počítají jen z původní jistiny. Výnos roste lineárně – žádný sněhová koule efekt.
+
+        <!-- Jednoduché úročení -->
+        <div class="card">
+            <span class="section-label simple">Jednoduché úročení</span>
+            <div class="input-row">
+                <div class="input-group"><label>Počáteční vklad (Kč)</label><input type="number" id="s-principal" value="100000"></div>
+                <div class="input-group"><label>Roční sazba (%)</label><input type="number" id="s-rate" value="7" step="0.1"></div>
+                <div class="input-group"><label>Doba (let)</label><input type="number" id="s-years" value="20"></div>
+            </div>
+            <div class="input-row">
+                <div class="input-group"><label>Měsíční příspěvek (Kč)</label><input type="number" id="s-monthly" value="2000"></div>
+            </div>
+            <button class="calc-btn btn-simple" onclick="calcSimple()">Vypočítat</button>
+            <div class="results-row">
+                <div class="result-item">
+                    <label>Konečná hodnota</label>
+                    <span id="s-final" class="result-big c-simple">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Výnos (zisk)</label>
+                    <span id="s-profit" class="result-small">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Vloženo celkem</label>
+                    <span id="s-invested" class="result-small">0 Kč</span>
+                </div>
+            </div>
+            <div class="pie-container"><canvas id="simplePie"></canvas></div>
+            <div id="simple-legend" class="pie-legend"></div>
+            <div class="info-box simple">
+                ⚠️ Jednoduché úročení = úroky se počítají jen z původní jistiny. Výnos roste lineárně – žádný sněhová koule efekt.
+            </div>
         </div>
     </div>
-</div>
 
-<!-- ═══════════════════════════════════════════
-     SEKCE 3: Důchodová kalkulačka
-════════════════════════════════════════════ -->
-<div class="one-col">
-    <div class="card">
-        <span class="section-label pension">Důchodová kalkulačka</span>
-        <div class="input-row">
-            <div class="input-group"><label>Hrubá měsíční mzda (Kč)</label><input type="number" id="p-salary" value="55000"></div>
-            <div class="input-group"><label>Odpracované roky</label><input type="number" id="p-years" value="35" min="1" max="50"></div>
-            <div class="input-group"><label>Rok narození</label><input type="number" id="p-birthyear" value="1970"></div>
-            <div class="input-group"><label>Výše osobního ohodnocení (OOH)</label>
-                <select id="p-coeff">
-                    <option value="0.85">Průměr odvětví (0,85)</option>
-                    <option value="1.0" selected>Průměr ČR (1,0)</option>
-                    <option value="1.2">Nadprůměr (1,2)</option>
-                    <option value="1.5">Výrazně nadprůměr (1,5)</option>
-                </select>
+    <!-- ═══════════════════════════════════════════
+         SEKCE 3: Důchodová kalkulačka
+    ════════════════════════════════════════════ -->
+    <div class="one-col">
+        <div class="card">
+            <span class="section-label pension">Důchodová kalkulačka</span>
+            <div class="input-row">
+                <div class="input-group"><label>Hrubá měsíční mzda (Kč)</label><input type="number" id="p-salary" value="55000"></div>
+                <div class="input-group"><label>Odpracované roky</label><input type="number" id="p-years" value="35" min="1" max="50"></div>
+                <div class="input-group"><label>Rok narození</label><input type="number" id="p-birthyear" value="1970"></div>
+                <div class="input-group"><label>Výše osobního ohodnocení (OOH)</label>
+                    <select id="p-coeff">
+                        <option value="0.85">Průměr odvětví (0,85)</option>
+                        <option value="1.0" selected>Průměr ČR (1,0)</option>
+                        <option value="1.2">Nadprůměr (1,2)</option>
+                        <option value="1.5">Výrazně nadprůměr (1,5)</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <button class="calc-btn btn-pension" onclick="calcPension()">Vypočítat důchod</button>
+            <button class="calc-btn btn-pension" onclick="calcPension()">Vypočítat důchod</button>
 
-        <div class="results-row">
-            <div class="result-item">
-                <label>Odhadovaný měsíční důchod</label>
-                <span id="p-pension" class="result-big c-pension">0 Kč</span>
+            <div class="results-row">
+                <div class="result-item">
+                    <label>Odhadovaný měsíční důchod</label>
+                    <span id="p-pension" class="result-big c-pension">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Základní výměra</label>
+                    <span id="p-base" class="result-small">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Zásluhová složka</label>
+                    <span id="p-merit" class="result-small">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Náhradový poměr (% mzdy)</label>
+                    <span id="p-ratio" class="result-small">0 %</span>
+                </div>
+                <div class="result-item">
+                    <label>Věk odchodu do důchodu</label>
+                    <span id="p-retireage" class="result-small">—</span>
+                </div>
             </div>
-            <div class="result-item">
-                <label>Základní výměra</label>
-                <span id="p-base" class="result-small">0 Kč</span>
-            </div>
-            <div class="result-item">
-                <label>Zásluhová složka</label>
-                <span id="p-merit" class="result-small">0 Kč</span>
-            </div>
-            <div class="result-item">
-                <label>Náhradový poměr (% mzdy)</label>
-                <span id="p-ratio" class="result-small">0 %</span>
-            </div>
-            <div class="result-item">
-                <label>Věk odchodu do důchodu</label>
-                <span id="p-retireage" class="result-small">—</span>
-            </div>
-        </div>
 
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:10px;">
-            <div>
-                <div class="pie-container"><canvas id="pensionPie"></canvas></div>
-                <div id="pension-legend" class="pie-legend"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:10px;">
+                <div>
+                    <div class="pie-container"><canvas id="pensionPie"></canvas></div>
+                    <div id="pension-legend" class="pie-legend"></div>
+                </div>
+                <div>
+                    <div class="pie-container"><canvas id="pensionRatioPie"></canvas></div>
+                    <div id="pension-ratio-legend" class="pie-legend"></div>
+                </div>
             </div>
-            <div>
-                <div class="pie-container"><canvas id="pensionRatioPie"></canvas></div>
-                <div id="pension-ratio-legend" class="pie-legend"></div>
-            </div>
-        </div>
 
-        <div class="info-box pension">
-            📋 Kalkulačka používá zjednodušený model ČSSZ: základní výměra 4 040 Kč + zásluhová složka odvozená od odpracovaných let a výše mzdy. Přesný výpočet závisí na celé mzdové historii a aktuální legislativě.
+            <div class="info-box pension">
+                📋 Kalkulačka používá zjednodušený model ČSSZ: základní výměra 4 040 Kč + zásluhová složka odvozená od odpracovaných let a výše mzdy. Přesný výpočet závisí na celé mzdové historii a aktuální legislativě.
+            </div>
         </div>
     </div>
-</div>
 
-<!-- ═══════════════════════════════════════════
-     BANNER: Česká spořitelna
-════════════════════════════════════════════ -->
-<div class="cs-banner">
-    <h2>Každá investice začíná jedním krokem</h2>
-    <p>Otevřete si účet u České spořitelny a začněte investovat do fondů, akcií nebo ETF — online, bez poboček.</p>
-    <a href="https://www.csas.cz/cs/osobni-finance/investovani" target="_blank" class="cs-btn">
-        🏦 Začít investovat u České spořitelny →
-    </a>
-</div>
-```
+    <!-- ═══════════════════════════════════════════
+         SEKCE 4: Rentní kalkulačka
+    ════════════════════════════════════════════ -->
+    <div class="one-col">
+        <div class="card">
+            <span class="section-label renta">Rentní kalkulačka · Kolik měsíčně budu vybírat?</span>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label>Naspořená částka (Kč)</label>
+                    <input type="number" id="r-capital" value="5000000">
+                </div>
+                <div class="input-group">
+                    <label>Roční výnos portfolia (%)</label>
+                    <input type="number" id="r-yield" value="6" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label>Délka výplaty (let)</label>
+                    <input type="number" id="r-duration" value="25">
+                </div>
+                <div class="input-group">
+                    <label>Inflace (%/rok)</label>
+                    <input type="number" id="r-inflation" value="3" step="0.1">
+                </div>
+            </div>
+
+            <button class="calc-btn btn-renta" onclick="calcRenta()">Vypočítat rentu</button>
+
+            <div class="results-row">
+                <div class="result-item">
+                    <label>Měsíční renta (nominální)</label>
+                    <span id="r-monthly" class="result-big c-renta">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Měsíční renta (reálná, po inflaci)</label>
+                    <span id="r-monthly-real" class="result-small">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Celkem vyplaceno</label>
+                    <span id="r-total-paid" class="result-small">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Z toho výnosy</label>
+                    <span id="r-total-yield" class="result-small">0 Kč</span>
+                </div>
+                <div class="result-item">
+                    <label>Věčná renta (∞ let)</label>
+                    <span id="r-perpetual" class="result-small">0 Kč / měs.</span>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:10px;">
+                <div>
+                    <div class="pie-container"><canvas id="rentaPie"></canvas></div>
+                    <div id="renta-legend" class="pie-legend"></div>
+                </div>
+                <div style="display:flex;flex-direction:column;justify-content:center;gap:10px;padding:14px;">
+                    <div style="font-size:12px;color:var(--text-secondary);text-transform:uppercase;font-weight:700;margin-bottom:4px;">Příklady srovnání</div>
+                    <div id="renta-compare" style="display:flex;flex-direction:column;gap:8px;font-size:13px;"></div>
+                </div>
+            </div>
+
+            <div class="info-box renta">
+                💡 <strong>Nominální renta</strong> = konstantní měsíční výběr. <strong>Reálná renta</strong> = kupní síla v dnešních penězích (po odpočtu inflace).
+                <strong>Věčná renta</strong> = výběr jen výnosů, kapitál zůstává zachován navždy (pravidlo 4 % / dle zadané sazby).
+                Výpočet předpokládá průběžné reinvestování zbytku kapitálu.
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════
+         BANNER: Česká spořitelna
+    ════════════════════════════════════════════ -->
+    <div class="cs-banner">
+        <h2>Každá investice začíná jedním krokem</h2>
+        <p>Otevřete si účet u České spořitelny a začněte investovat do fondů, akcií nebo ETF — online, bez poboček.</p>
+        <a href="https://www.csas.cz/cs/osobni-finance/investovani" target="_blank" class="cs-btn">
+            🏦 Začít investovat u České spořitelny →
+        </a>
+    </div>
 
 </div><!-- /container -->
 
@@ -768,14 +838,87 @@ function calcPension() {
     `;
 }
 
+/* ────────────────────────────────────────────
+   SEKCE 4: Rentní kalkulačka
+──────────────────────────────────────────── */
+function calcRenta() {
+    const C  = +document.getElementById('r-capital').value;       // Počáteční kapitál
+    const ry = +document.getElementById('r-yield').value / 100;   // Roční výnos
+    const T  = +document.getElementById('r-duration').value;      // Počet let
+    const ri = +document.getElementById('r-inflation').value / 100; // Inflace
+
+    // Měsíční výnos
+    const rm = Math.pow(1 + ry, 1/12) - 1;
+    const n  = T * 12; // počet měsíců
+
+    // Nominální měsíční renta (anuita z konstantního kapitálu)
+    // PMT = C * rm / (1 - (1+rm)^-n)
+    let monthly;
+    if (rm < 0.00001) {
+        monthly = C / n; // degenerate case – nulový výnos
+    } else {
+        monthly = C * rm / (1 - Math.pow(1 + rm, -n));
+    }
+
+    // Reálná kupní síla v dnešních Kč (deflace inflací za T/2 let průměrně)
+    const monthlyReal = monthly / Math.pow(1 + ri, T / 2);
+
+    // Celkem vyplaceno a výnosy
+    const totalPaid  = monthly * n;
+    const totalYield = totalPaid - C;
+
+    // Věčná renta: jen výnosy, kapitál zůstává
+    const perpetual = C * ry / 12;
+
+    document.getElementById('r-monthly').innerText      = fK(monthly);
+    document.getElementById('r-monthly-real').innerText = fK(monthlyReal) + ' (dnešní hodnota)';
+    document.getElementById('r-total-paid').innerText   = fK(totalPaid);
+    document.getElementById('r-total-yield').innerText  = fK(Math.max(totalYield, 0));
+    document.getElementById('r-perpetual').innerText    = fK(perpetual) + ' / měs.';
+
+    // Koláč: kapitál vs. výnosy v celkové výplatě
+    const capitalPart  = Math.min(C, totalPaid);
+    const yieldPart    = Math.max(totalYield, 0);
+    makePie('rentaPie',
+        ['Původní kapitál', 'Výnosy z investic'],
+        [capitalPart, yieldPart],
+        ['#00b5ad', '#40d9d3'],
+        'renta-legend'
+    );
+
+    // Srovnávací tabulka
+    const comparisons = [
+        { label: 'Průměrný plat ČR (2025)',     value: 45_000 },
+        { label: 'Průměrný důchod ČR',           value: 20_800 },
+        { label: 'Medián mzdy ČR',               value: 38_000 },
+        { label: 'Minimální mzda ČR',            value: 18_900 },
+    ];
+    const cmpHtml = comparisons.map(c => {
+        const ratio = (monthly / c.value);
+        const pct   = (ratio * 100).toFixed(0);
+        const bar   = Math.min(ratio, 3) / 3 * 100;
+        return `
+            <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+                    <span style="color:var(--text-secondary)">${c.label}</span>
+                    <strong style="color:var(--renta)">${pct} %</strong>
+                </div>
+                <div style="background:#f0f0f5;border-radius:6px;height:7px;overflow:hidden;">
+                    <div style="background:var(--renta);height:100%;width:${bar}%;border-radius:6px;transition:width 0.8s ease;"></div>
+                </div>
+            </div>`;
+    }).join('');
+    document.getElementById('renta-compare').innerHTML = cmpHtml;
+}
+
 /* ── Inicializace ── */
 window.onload = () => {
     calculateBackwards();
     calcCompound();
     calcSimple();
     calcPension();
+    calcRenta();
 };
 </script>
-
 </body>
 </html>
