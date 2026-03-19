@@ -3,16 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Investiční Lab Pro: Empire State Edition</title>
+    <title>Investiční Lab: Budoucnost 2026+</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root {
             --bg: #f5f5f7;
-            --card-bg: rgba(255, 255, 255, 0.95);
+            --card-bg: #ffffff;
             --accent: #0071e3;
-            --success: #34c759;
-            --warning: #ff9500;
-            --renta: #af52de;
             --sp500: #ff3b30;
             --text: #1d1d1f;
             --text-secondary: #86868b;
@@ -23,277 +20,242 @@
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
-            padding: 15px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .container { max-width: 1300px; width: 100%; padding-bottom: 60px; }
+        .container { max-width: 1200px; width: 100%; }
 
-        header { text-align: center; margin: 30px 0; }
-        h1 { font-size: 42px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 5px; }
-        .subtitle { color: var(--text-secondary); font-size: 19px; }
+        header { text-align: center; margin-bottom: 30px; }
+        h1 { font-size: 38px; font-weight: 800; letter-spacing: -0.02em; }
 
-        .grid-top {
+        .main-grid {
             display: grid;
-            grid-template-columns: 2.2fr 1fr;
-            gap: 24px;
-            margin-bottom: 24px;
-        }
-
-        .grid-bottom {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+            margin-bottom: 25px;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: 24px;
             padding: 30px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.04);
-            border: 1px solid rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
             box-sizing: border-box;
         }
 
-        h2 { font-size: 22px; margin-top: 0; margin-bottom: 20px; border-bottom: 1px solid #f0f0f2; padding-bottom: 10px; }
-        .sp-title { color: var(--sp500); font-size: 28px; }
-
-        .input-row { display: flex; gap: 15px; margin-bottom: 15px; }
-        .input-group { flex: 1; margin-bottom: 10px; }
+        .input-row { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .input-group { flex: 1; min-width: 140px; }
         
         label { display: block; font-size: 11px; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; font-weight: 700; }
         input {
             width: 100%;
-            padding: 14px;
-            border-radius: 12px;
+            padding: 12px;
+            border-radius: 10px;
             border: 1px solid #d2d2d7;
             font-size: 16px;
-            background: #fff;
             outline: none;
-            box-sizing: border-box;
         }
-        input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(0,113,227,0.1); }
 
         .calc-btn {
-            background: var(--sp500);
+            background: var(--accent);
             color: white;
             border: none;
-            padding: 18px;
-            border-radius: 15px;
-            font-size: 18px;
+            padding: 16px;
+            border-radius: 12px;
+            font-size: 17px;
             font-weight: 700;
             cursor: pointer;
             width: 100%;
-            margin-top: 5px;
-            transition: transform 0.2s, background 0.2s;
+            transition: 0.2s;
         }
-        .calc-btn:hover { background: #e03127; transform: translateY(-1px); }
+        .calc-btn:hover { background: #0077ed; transform: scale(1.01); }
 
-        .chart-container { height: 400px; margin-top: 25px; }
-        .chart-mini { height: 160px; margin-top: 15px; }
+        .chart-container { height: 400px; margin-top: 20px; }
 
-        .summary { margin-top: 15px; }
-        .total-val { font-size: 26px; font-weight: 800; color: var(--accent); display: block; }
-        .sp-total { font-size: 34px; color: var(--sp500); }
+        /* ESB Visual */
+        .esb-card { display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .esb-wrapper { position: relative; width: 180px; height: 180px; margin: 20px 0; }
+        .esb-img { width: 130px; height: 130px; border-radius: 50%; position: absolute; top: 25px; left: 25px; object-fit: cover; z-index: 1; }
+        .esb-ring { width: 180px; height: 180px; transform: rotate(-90deg); position: absolute; z-index: 2; }
+        .esb-ring circle { fill: none; stroke-width: 10; stroke-linecap: round; }
+        .ring-bg { stroke: #f2f2f7; }
+        .ring-fill { stroke: var(--sp500); stroke-dasharray: 534; stroke-dashoffset: 534; transition: stroke-dashoffset 1s ease-in-out; }
 
-        /* ESB Ring Visual */
-        .esb-visual { align-items: center; text-align: center; justify-content: center; }
-        .esb-wrapper { position: relative; width: 170px; height: 170px; margin: 15px 0; }
-        .esb-img { width: 125px; height: 125px; border-radius: 50%; position: absolute; top: 22.5px; left: 22.5px; object-fit: cover; }
-        .esb-ring { width: 170px; height: 170px; transform: rotate(-90deg); }
-        .esb-ring circle { fill: none; stroke-width: 9; stroke-linecap: round; }
-        .ring-bg { stroke: #eee; }
-        .ring-fill { stroke: var(--sp500); stroke-dasharray: 502; stroke-dashoffset: 502; transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        .status-box { background: var(--bg); border-radius: 15px; padding: 15px; margin-top: 15px; width: 100%; font-size: 14px; }
 
-        .esb-status-box { background: var(--bg); border-radius: 15px; padding: 15px; width: 100%; margin-top: 15px; font-size: 14px; }
+        .bottom-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
 
-        .cta { background: #fff; border-radius: 30px; padding: 40px; text-align: center; width: 100%; box-sizing: border-box; margin-top: 40px; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
-        .btn-link { display: inline-block; background: var(--accent); color: white; padding: 16px 36px; border-radius: 50px; text-decoration: none; font-weight: 600; font-size: 18px; margin-top: 20px; }
-
-        @media (max-width: 1000px) { .grid-top { grid-template-columns: 1fr; } .chart-container { height: 300px; } }
+        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header>
-        <h1>Investiční Lab <span style="color:var(--sp500)">MAX</span></h1>
-        <p class="subtitle">Historická volatilita S&P 500 (1906–2023)</p>
+        <h1>Projekce bohatství 2026+</h1>
+        <p style="color:var(--text-secondary)">Simulace vaší cesty k Empire State Building</p>
     </header>
 
-    <div class="grid-top">
+    <div class="main-grid">
         <div class="card">
-            <h2 class="sp-title">Vývoj trhu v čase</h2>
+            <h2 style="color:var(--sp500); margin-top:0;">Investiční horizont</h2>
             <div class="input-row">
-                <div class="input-group"><label>Měsíční vklad (USD)</label><input type="number" id="sp-monthly" value="500"></div>
-                <div class="input-group"><label>Horizont (Roky)</label><input type="number" id="sp-years" value="30" max="115"></div>
-                <div class="input-group" style="flex: 0 0 110px;"><label>Kurz CZK</label><input type="number" id="sp-fx" value="23.5"></div>
+                <div class="input-group"><label>Měsíční vklad (USD)</label><input type="number" id="sp-monthly" value="1000"></div>
+                <div class="input-group"><label>Počet let</label><input type="number" id="sp-years" value="30" max="100"></div>
+                <div class="input-group"><label>Kurz CZK/USD</label><input type="number" id="sp-fx" value="23.5"></div>
             </div>
-            <button class="calc-btn" onclick="calculateSP()">Spustit tržní simulaci</button>
-            
-            <div style="display:flex; flex-wrap:wrap; gap:30px; margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
-                <div class="summary" style="flex:1.5;">
-                    Konečné jmění:
-                    <span class="total-val sp-total" id="sp-res-usd">$0</span>
-                    <span id="sp-res-czk" style="color:var(--text-secondary); font-size:18px;">0 Kč</span>
+            <button class="calc-btn" onclick="startProjection()">Generovat budoucí vývoj</button>
+
+            <div style="display:flex; gap:30px; margin-top:20px; border-top:1px solid #eee; padding-top:20px;">
+                <div>
+                    <label>Hodnota v USD (rok <span id="end-year-label">2056</span>)</label>
+                    <span id="res-usd" style="font-size:32px; font-weight:800; color:var(--sp500); display:block;">$0</span>
                 </div>
-                <div class="summary" style="color:var(--text-secondary); font-size:13px; flex:1; border-left:2px solid #eee; padding-left:20px;">
-                    Období: <strong id="sp-period" style="color:var(--text);">...</strong><br>
-                    Celkem vloženo: <span id="sp-vklady" style="color:var(--text);">$0</span><br>
-                    Čistý zisk: <span id="sp-zisk" style="color:var(--success); font-weight:700;">$0</span>
+                <div>
+                    <label>Hodnota v CZK</label>
+                    <span id="res-czk" style="font-size:20px; font-weight:600; color:var(--text-secondary); display:block;">0 Kč</span>
                 </div>
             </div>
 
-            <div class="chart-container"><canvas id="chartSP"></canvas></div>
+            <div class="chart-container"><canvas id="mainChart"></canvas></div>
         </div>
 
-        <div class="card esb-visual">
-            <h2>Cíl: Empire State</h2>
+        <div class="card esb-card">
+            <h2 style="margin:0;">Cíl: Empire State</h2>
             <div class="esb-wrapper">
-                <svg class="esb-ring" viewBox="0 0 170 170">
-                    <circle class="ring-bg" cx="85" cy="85" r="80"></circle>
-                    <circle id="esb-ring-fill" class="ring-fill" cx="85" cy="85" r="80"></circle>
+                <svg class="esb-ring" viewBox="0 0 180 180">
+                    <circle class="ring-bg" cx="90" cy="90" r="85"></circle>
+                    <circle id="ring-fill" class="ring-fill" cx="90" cy="90" r="85"></circle>
                 </svg>
-                <img src="https://images.unsplash.com/photo-1555109307-f7d9d22a5de8?q=80&w=250&auto=format&fit=crop" class="esb-img">
+                <img src="https://images.unsplash.com/photo-1555109307-f7d9d22a5de8?q=80&w=300&auto=format&fit=crop" class="esb-img">
             </div>
-            <div id="esb-perc" style="font-weight:800; font-size:28px; color:var(--sp500)">0.00%</div>
-            <p style="font-size:12px; color:var(--text-secondary); margin-top:5px;">podíl na vlastnictví $2.2 mld.</p>
-            <div class="esb-status-box">
-                <p id="esb-status" style="font-weight:600; margin:0; color:var(--text);">Zatím ti nepatří ani klika.</p>
+            <div id="esb-perc" style="font-size:30px; font-weight:800; color:var(--sp500);">0.00%</div>
+            <p style="font-size:12px; color:var(--text-secondary)">podíl na budově ($2.2 mld.)</p>
+            <div class="status-box">
+                <p id="esb-status" style="font-weight:600; margin:0;">Zatím ti nepatří ani klika.</p>
             </div>
         </div>
     </div>
 
-    <div class="grid-bottom">
+    <div class="bottom-grid">
         <div class="card">
-            <h2>Složené úročení</h2>
-            <div class="input-group"><label>Vklad (Kč)</label><input type="number" id="c-init" value="100000" oninput="calculateOthers()"></div>
-            <div class="input-group"><label>Měsíčně (Kč)</label><input type="number" id="c-monthly" value="2000" oninput="calculateOthers()"></div>
-            <div class="input-row">
-                <div class="input-group"><label>% p.a.</label><input type="number" id="c-rate" value="7" oninput="calculateOthers()"></div>
-                <div class="input-group"><label>Roky</label><input type="number" id="c-years" value="20" oninput="calculateOthers()"></div>
-            </div>
-            <div class="summary">Celkem: <span class="total-val" id="c-total" style="color:var(--success)">0 Kč</span></div>
-            <div class="chart-mini"><canvas id="chartC"></canvas></div>
+            <h3>Složené úročení (7% p.a.)</h3>
+            <input type="number" id="c-monthly" value="5000" placeholder="Měsíčně Kč" oninput="calcOthers()">
+            <p id="c-res" style="font-size:24px; font-weight:700; color:#34c759; margin-top:10px;">0 Kč</p>
         </div>
-
         <div class="card">
-            <h2>Výběr renty</h2>
-            <div class="input-group"><label>Naspořeno (Kč)</label><input type="number" id="r-init" value="10000000" oninput="calculateOthers()"></div>
-            <div class="input-row">
-                <div class="input-group"><label>Roky renty</label><input type="number" id="r-years" value="25" oninput="calculateOthers()"></div>
-                <div class="input-group"><label>Zhodnocení %</label><input type="number" id="r-rate" value="4" oninput="calculateOthers()"></div>
-            </div>
-            <div class="summary">Měsíční renta: <span class="total-val" id="r-total" style="color:var(--renta)">0 Kč</span></div>
-            <div class="chart-mini"><canvas id="chartR"></canvas></div>
+            <h3>Čerpání renty</h3>
+            <input type="number" id="r-init" value="5000000" placeholder="Kapitál Kč" oninput="calcOthers()">
+            <p id="r-res" style="font-size:24px; font-weight:700; color:#af52de; margin-top:10px;">0 Kč / měsíc</p>
         </div>
-
         <div class="card">
-            <h2>Státní důchod</h2>
-            <div class="input-group"><label>Hrubá mzda (Kč)</label><input type="number" id="p-salary" value="50000" oninput="calculateOthers()"></div>
-            <div class="input-group" style="margin-top:10px;"><label>Odpracované roky</label><input type="number" id="p-years" value="40" oninput="calculateOthers()"></div>
-            <div class="summary" style="margin-top:25px;">Měsíčně: <span class="total-val" id="p-total" style="color:var(--warning)">0 Kč</span></div>
-            <div class="chart-mini"><canvas id="chartP"></canvas></div>
+            <h3>Státní důchod (odhad)</h3>
+            <input type="number" id="p-salary" value="50000" placeholder="Hrubá mzda" oninput="calcOthers()">
+            <p id="p-res" style="font-size:24px; font-weight:700; color:#ff9500; margin-top:10px;">0 Kč</p>
         </div>
-    </div>
-
-    <div class="cta">
-        <h3>Investujte chytře</h3>
-        <p>S&P 500 je základem každého portfolia.</p>
-        <a href="https://www.csas.cz" target="_blank" class="btn-link">Založit účet u České spořitelny</a>
     </div>
 </div>
 
 <script>
-    // Data S&P 500 (1906 - 2023)
-    const spData = [15.1,4.3,-3.2,10.1,1.3,-3.1,2.1,-11.1,10.1,15.1,-2.1,-21.1,16.1,18.1,15.1,-1.1,10.1,11.1,19.1,26.1,14.1,3.1,12.1,-11.1,-24.1,-43.1,-8.1,49.1,-1.1,46.1,32.1,-35.1,29.1,-1.1,-12.1,-12.1,19.1,25.1,19.1,35.1,-8.1,5.1,-0.1,18.1,30.1,23.1,18.1,-1.1,52.1,32.1,6.1,-10.1,43.1,12.1,0.1,26.1,-8.1,22.1,16.1,12.1,-9.1,23.1,10.1,-8.1,3.1,14.1,18.1,-14.1,-25.1,37.1,-14.1,23.1,7.1,6.1,18.1,31.1,31.1,20.1,22.1,6.1,31.1,18.1,5.1,16.1,31.1,-3.1,29.1,1.1,13.1,37.1,22.1,33.1,28.1,20.1,-9.1,-11.1,-21.1,28.1,10.1,4.1,15.1,5.1,-36.1,25.1,14.1,1.1,15.1,32.1,13.1,1.1,11.1,21.1,-4.1,31.1,18.1,28.1,-18.1,26.1];
+    const spHistory = [15.1,4.3,-3.2,10.1,1.3,-3.1,2.1,-11.1,10.1,15.1,-2.1,-21.1,16.1,18.1,15.1,-1.1,10.1,11.1,19.1,26.1,14.1,3.1,12.1,-11.1,-24.1,-43.1,-8.1,49.1,-1.1,46.1,32.1,-35.1,29.1,-1.1,-12.1,-12.1,19.1,25.1,19.1,35.1,-8.1,5.1,-0.1,18.1,30.1,23.1,18.1,-1.1,52.1,32.1,6.1,-10.1,43.1,12.1,0.1,26.1,-8.1,22.1,16.1,12.1,-9.1,23.1,10.1,-8.1,3.1,14.1,18.1,-14.1,-25.1,37.1,-14.1,23.1,7.1,6.1,18.1,31.1,31.1,20.1,22.1,6.1,31.1,18.1,5.1,16.1,31.1,-3.1,29.1,1.1,13.1,37.1,22.1,33.1,28.1,20.1,-9.1,-11.1,-21.1,28.1,10.1,4.1,15.1,5.1,-36.1,25.1,14.1,1.1,15.1,32.1,13.1,1.1,11.1,21.1,-4.1,31.1,18.1,28.1,-18.1,26.1];
     
-    let charts = {};
+    let mainChart;
     const fU = v => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(v);
     const fC = v => new Intl.NumberFormat('cs-CZ',{style:'currency',currency:'CZK',maximumFractionDigits:0}).format(v);
 
-    function calculateSP() {
-        const m = +document.getElementById('sp-monthly').value, y = +document.getElementById('sp-years').value, fx = +document.getElementById('sp-fx').value;
-        const validY = Math.min(y, spData.length);
-        const start = Math.floor(Math.random()*(spData.length - validY));
-        let total = 0, invested = 0, lineData = [], labs = [];
+    function startProjection() {
+        const m = +document.getElementById('sp-monthly').value;
+        const years = +document.getElementById('sp-years').value;
+        const fx = +document.getElementById('sp-fx').value;
+        const currentYear = 2026;
 
-        for(let i=0; i<validY; i++) {
-            invested += (m * 12);
-            total += (m * 12);
-            total *= (1 + spData[start+i]/100);
-            labs.push("Rok "+(i+1));
-            lineData.push(total);
+        let total = 0;
+        let invested = 0;
+        let chartData = [];
+        let labels = [];
+
+        for(let i = 0; i <= years; i++) {
+            labels.push(currentYear + i);
+            if(i > 0) {
+                invested += (m * 12);
+                total += (m * 12);
+                // Náhodně vybereme výnos z historie pro simulaci kolísání
+                const randomReturn = spHistory[Math.floor(Math.random() * spHistory.length)];
+                total *= (1 + randomReturn/100);
+            }
+            chartData.push(total);
         }
 
-        document.getElementById('sp-res-usd').innerText = fU(total);
-        document.getElementById('sp-res-czk').innerText = fC(total * fx);
-        document.getElementById('sp-vklady').innerText = fU(invested);
-        document.getElementById('sp-zisk').innerText = fU(total - invested);
-        document.getElementById('sp-period').innerText = `${1906+start} – ${1906+start+validY}`;
+        // Update Textů
+        document.getElementById('end-year-label').innerText = currentYear + years;
+        document.getElementById('res-usd').innerText = fU(total);
+        document.getElementById('res-czk').innerText = fC(total * fx);
 
-        charts.sp.data.labels = labs;
-        charts.sp.data.datasets[0].data = lineData;
-        charts.sp.update();
+        // Update Grafu
+        if(mainChart) mainChart.destroy();
+        const ctx = document.getElementById('mainChart').getContext('2d');
+        mainChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Hodnota portfolia ($)',
+                    data: chartData,
+                    borderColor: '#ff3b30',
+                    backgroundColor: 'rgba(255, 59, 48, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    pointRadius: years > 50 ? 0 : 3
+                }]
+            },
+            options: {
+                maintainAspectRatio: false,
+                scales: {
+                    y: { ticks: { callback: v => fU(v) } }
+                },
+                plugins: { legend: { display: false } }
+            }
+        });
 
-        // Empire State Building Progress
-        let perc = ((total - invested) / 2200000000) * 100;
-        document.getElementById('esb-perc').innerText = perc.toFixed(perc > 0.01 ? 2 : 4) + "%";
-        document.getElementById('esb-ring-fill').style.strokeDashoffset = 502 - (502 * Math.min(perc, 100) / 100);
+        // Empire State Building Logic
+        const ESB_VALUE = 2200000000;
+        let profit = total - invested;
+        let perc = profit > 0 ? (profit / ESB_VALUE) * 100 : 0;
         
+        document.getElementById('esb-perc').innerText = perc.toFixed(perc > 0.01 ? 2 : 4) + "%";
+        document.getElementById('ring-fill').style.strokeDashoffset = 534 - (534 * Math.min(perc, 100) / 100);
+
         const s = document.getElementById('esb-status');
-        if(perc > 100) s.innerText = "MRAKODRAP JE TVŮJ!";
-        else if(perc > 10) s.innerText = "Vlastníš celou vyhlídku v 86. patře!";
-        else if(perc > 1) s.innerText = "GRATULUJI! Patří ti celé 10. patro.";
-        else if(perc > 0.1) s.innerText = "Vlastníš celé lobby v přízemí.";
-        else s.innerText = "Zatím ti nepatří ani klika.";
+        if(perc > 100) s.innerText = "MRAKODRAP JE TVŮJ! King Kong tě zdraví.";
+        else if(perc > 10) s.innerText = "Vlastníš celou vyhlídkovou terasu!";
+        else if(perc > 1) s.innerText = "Patří ti celé 10. patro budovy.";
+        else if(perc > 0.1) s.innerText = "Vlastníš vstupní lobby a výtahy.";
+        else s.innerText = "Zatím ti nepatří ani klika od vchodu.";
     }
 
-    function calculateOthers() {
-        // Složené
-        const ci = +document.getElementById('c-init').value, cm = +document.getElementById('c-monthly').value, cr = (+document.getElementById('c-rate').value/100)/12, cy = +document.getElementById('c-years').value*12;
-        const cf = (ci * Math.pow(1+cr,cy)) + (cm * (Math.pow(1+cr,cy)-1)/cr);
-        document.getElementById('c-total').innerText = fC(cf);
-        updateDoughnut('c', [ci+(cm*cy), cf-(ci+(cm*cy))]);
+    function calcOthers() {
+        // Složené úročení (7% fix)
+        const cm = +document.getElementById('c-monthly').value;
+        const resC = (cm * 12) * ((Math.pow(1.07, 20) - 1) / 0.07); // za 20 let
+        document.getElementById('c-res').innerText = fC(resC);
 
-        // Renta
-        const ri = +document.getElementById('r-init').value, ry = +document.getElementById('r-years').value*12, rr = (+document.getElementById('r-rate').value/100)/12;
-        const rf = rr > 0 ? (ri * rr) / (1 - Math.pow(1 + rr, -ry)) : ri / ry;
-        document.getElementById('r-total').innerText = fC(rf);
-        updateDoughnut('r', [ri, Math.max(0, (rf*ry)-ri)]);
+        // Renta (4% pravidlo)
+        const ri = +document.getElementById('r-init').value;
+        document.getElementById('r-res').innerText = fC((ri * 0.04) / 12) + " / měsíc";
 
         // Důchod
-        const ps = +document.getElementById('p-salary').value, py = +document.getElementById('p-years').value;
-        const df = 4400 + ((ps <= 19346 ? ps : 19346 + (ps-19346)*0.26)*0.015*py);
-        document.getElementById('p-total').innerText = fC(df);
-        updateDoughnut('p', [4400, df-4400]);
-    }
-
-    function updateDoughnut(id, data) {
-        charts[id].data.datasets[0].data = data;
-        charts[id].update();
+        const ps = +document.getElementById('p-salary').value;
+        document.getElementById('p-res').innerText = fC(4400 + (ps * 0.29));
     }
 
     window.onload = () => {
-        // S&P Line Chart
-        charts.sp = new Chart(document.getElementById('chartSP'), {
-            type:'line',
-            data:{labels:[], datasets:[{label:'Hodnota portfolia ($)',data:[],borderColor:'#ff3b30',backgroundColor:'rgba(255,59,48,0.1)',fill:true,tension:0.3,pointRadius:0}]},
-            options:{maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{y:{ticks:{callback:v=>fU(v)}}}}
-        });
-
-        const cfg = (c) => ({ type:'doughnut', data:{datasets:[{data:[0,0],backgroundColor:['#e5e5e7', c],borderWidth:0}]}, options:{cutout:'80%',maintainAspectRatio:false,plugins:{legend:{display:false}}}});
-        charts.c = new Chart(document.getElementById('chartC'), cfg('#34c759'));
-        charts.r = new Chart(document.getElementById('chartR'), cfg('#af52de'));
-        charts.p = new Chart(document.getElementById('chartP'), cfg('#ff9500'));
-        
-        calculateSP();
-        calculateOthers();
+        startProjection();
+        calcOthers();
     };
 </script>
+
 </body>
 </html>
